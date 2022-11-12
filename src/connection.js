@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 //connect to local mongoose server
-mongoose.connect("mongodb+srv://temp:temp@cluster0.jcziwdf.mongodb.net/solidstart?retryWrites=true&w=majority")
+mongoose.connect(process.env.MONGO_URI)
 
 // connection messages
 mongoose.connection
