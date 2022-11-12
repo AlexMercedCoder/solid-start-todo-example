@@ -1,4 +1,8 @@
 import mongoose from "mongoose"
+import dotenv from "dotenv"
+
+//get variables from .env
+dotenv.config()
 
 //connect to local mongoose server
 mongoose.connect(process.env.MONGO_URI)

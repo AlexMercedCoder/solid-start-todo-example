@@ -20,30 +20,45 @@ export default function Home() {
   // retrieve the pre-fetched data
   const todos = useRouteData();
 
-  // Create an Action for when a form is filled out
-  // const [result, createTodo] = createRouteAction(async (message) => {
-  //   console.log("adding")
-  //   const response = await fetch(`http://localhost:3000/api/todo/${message}`, {
-  //     method: "POST"
-  //   })
-  //   const result = await response.json()
-  //   console.log(result)
-  // });
+  // Create an Action for when a form is filled out (via button click)
+  const [result, createTodo] = createRouteAction(async (message) => {
+    console.log("adding")
+    const response = await fetch(`http://localhost:3000/api/todo/${message}`, {
+      method: "POST"
+    })
+    const result = await response.json()
+    refetchRouteData()
+  });
 
-  // function for handling submission of form
-  const handleSubmit = async (event) => {
+  // trying to use route action Form component
+  const [_, { Form }] = createRouteAction(async (formData) => {
+    console.log("adding")
+    const response = await fetch(`http://localhost:3000/api/todo/${formData.get("message")}`, {
+      method: "POST"
+    })
+    const result = await response.json()
+    refetchRouteData()
+  })
+
+  // function for handling submission of form or button click
+  const handleSubmit = (event) => {
     console.log("submit");
-    const response = await fetch(
-      `http://localhost:3000/api/todo/${textInput.value}`,
-      {
-        method: "POST",
-      }
-    );
-    const result = await response.json();
-    refetchRouteData();
+    fetch(`http://localhost:3000/api/todo/${textInput.value}`, {
+      method: "POST",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then(() => refetchRouteData());
   };
 
-  // console.log(todos());
+  // simple function for testing click event
+  function simple(){
+    console.log("hello")
+  }
+
+  console.log(simple)
+
 
   return (
     <main>
@@ -53,9 +68,17 @@ export default function Home() {
         )}
       </For>
 
-        <input type="text" name="message" ref={textInput} />
-        
+      <Form>
+      <input type="text" name="message"/>
+      <input type="submit"/>
+      </Form>
 
+      <input type="text" name="message" ref={textInput} />
+      <button
+        onClick={handleSubmit}
+      >
+        New Todo
+      </button>
     </main>
   );
 }
