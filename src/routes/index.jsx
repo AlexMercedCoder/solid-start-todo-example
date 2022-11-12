@@ -54,7 +54,7 @@ export default function Home() {
       </For>
 
         <input type="text" name="message" ref={textInput} />
-        <button onClick={handleSubmit}>New Todo</button>
+        
 
     </main>
   );
